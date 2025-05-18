@@ -7,7 +7,6 @@ import pprint
 # open the sample weather data file and use the json module to load and parse it
 with open("../../sample-weather-history.json", "r") as weatherfile:
     weatherdata = json.load(weatherfile)
-
 # TODO: What was the warmest day in the data set?
 #my attempt
 maxtemp = None

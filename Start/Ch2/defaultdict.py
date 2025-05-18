@@ -2,8 +2,8 @@
 # Count items using a default dictionary
 
 import json
-import pprint
-
+from pprint import pprint
+from collections import defaultdict
 
 # open the sample weather data file and use the json module to load and parse it
 with open("../../sample-weather-history.json", "r") as weatherfile:
@@ -11,9 +11,31 @@ with open("../../sample-weather-history.json", "r") as weatherfile:
 
 # The defaultdict collection provides a cleaner way of initializing key values
 # TODO: Count the number of data points for each year we have data
+years = defaultdict(int)
+for d in weatherdata:
+    key = d['date'][0:4]
+    years[key] +=1
+#pprint(years)
 
+
+#This is how it would have to be done without defaultdict:
+years = {}
+for d in weatherdata:
+    key = d['date'][0:4] #gets the first 4 characters of the date 
+    if key in years:
+        years[key] += 1
+    else:
+        years[key] = 1  #else initilize the key's value to be 1
+#pprint(years, width=5)
 
 # TODO: defaultdict can use more complex objects, like lists
+years_months = defaultdict(list)
+for d in weatherdata:
+    key = d['date'][0:7] #get the year and month
+    years_months[key].append(d) #for each YYYY-MM key, the value is a list of dicts for each date's data. Example: (2022-01': [{'date': '2022-01-08', 'tmin': 21, 'tmax': 42, 'prcp': 0.0, 'snow': 0.0, 'snwd': 0.0, 'awnd': 3.8}, {'date': '2022-01-17'....
+print (len(years_months))
+#print (years_months)
+
 
 # TODO: create a dictionary with year-month keys and lists for each day in the month
 
@@ -28,3 +50,6 @@ def coldest_day(month):
     return (cd['date'], cd['tmin'])
 
 # TODO: loop over the keys of the dictionary and find each warmest and coldest day
+for year_month, daylist in years_months.items():   #for a dict, .items returns the key-value pair
+    print(f'Warmest day was {warmest_day(daylist)}')
+    print(f'Coldest day was {coldest_day(daylist)}')
